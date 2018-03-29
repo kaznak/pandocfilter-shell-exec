@@ -31,6 +31,7 @@ while read tname tscript ; do
     ecode=$?
     if [ 0 -eq $ecode ] ; then
 	msg INFO test $tname succsess with $ecode
+	rm -f $testd/test.$tname.html
     else
 	msg INFO test $tname error with $ecode
     fi
