@@ -16,7 +16,7 @@ tr 'A-Z' 'a-z'
 
 ## multiple
 
-~~~{#piped .shell-exec}
+~~~{#multiple .shell-exec}
 echo 'HELLO! SHELL!'	|
 tr 'A-Z' 'a-z'
 echo 'FROM PANDOC!'	|
