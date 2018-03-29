@@ -12,17 +12,26 @@ import csv
 #############################################################
 def proc_shell_exec(elm, doc):
     if type(elm) == pf.CodeBlock and 'shell-exec' in elm.classes:
-        prog = u'sh'
-        code = elm.text
+        attr = elm.attributes
+        prog = attr.get('prog',u'sh')
+        if 'prog' in attr:
+            del attr['prog']
+
+        code = elm.text + '\n'
 
         sys.stderr.write(
             'shell-exec #' + elm.identifier + ' prog=' + prog + '\n'
         )
     
-        p = Popen([prog], stdin=PIPE, stdout=PIPE)
+        p = Popen(
+            # !!TODO!! handle tab delimter
+            [ s for s in prog.split(' ') if s != '' ],
+            stdin=PIPE, stdout=PIPE )
         p.stdin.write(code.encode('utf-8'))
         elm.text = p.communicate()[0].decode('utf-8')
         p.stdin.close
+
+        elm.attributes = attr
 
         return elm
 
