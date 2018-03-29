@@ -8,25 +8,24 @@ from subprocess import Popen, PIPE
 import collections as c
 import io
 import csv
+from functools import reduce
 
 #############################################################
 def proc_shell_exec(elm, doc):
     if type(elm) == pf.CodeBlock and 'shell-exec' in elm.classes:
         attr = elm.attributes
-        prog = attr.get('prog',u'sh')
+        prog = attr.get('prog',u'sh').split()
+
         if 'prog' in attr:
             del attr['prog']
 
         code = elm.text + '\n'
 
         sys.stderr.write(
-            'shell-exec #' + elm.identifier + ' prog=' + prog + '\n'
+            'shell-exec #' + elm.identifier + ' prog=' + ' '.join(prog) + '\n'
         )
-    
-        p = Popen(
-            # !!TODO!! handle tab delimter
-            [ s for s in prog.split(' ') if s != '' ],
-            stdin=PIPE, stdout=PIPE )
+
+        p = Popen(prog, stdin=PIPE, stdout=PIPE )
         p.stdin.write(code.encode('utf-8'))
         elm.text = p.communicate()[0].decode('utf-8')
         p.stdin.close
