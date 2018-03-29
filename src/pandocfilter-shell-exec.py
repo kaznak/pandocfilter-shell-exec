@@ -17,16 +17,16 @@ def proc_shell_exec(elm, doc):
     
     p = Popen([prog], stdin=PIPE, stdout=PIPE)
     p.stdin.write(code.encode('utf-8'))
-    ret = p.communicate()[0].decode('utf-8')
+    elm.text = p.communicate()[0].decode('utf-8')
     p.stdin.close
 
-    return ret
+    return elm
 
 #############################################################
 def pandoc_filter(elm, doc):
     # print((elm,doc), file=sys.stderr)
     if type(elm) == pf.CodeBlock and 'shell-exec' in elm.classes:
-        elm.text = proc_shell_exec(elm, doc)
+        elm = proc_shell_exec(elm, doc)
         return elm
 
 #############################################################
