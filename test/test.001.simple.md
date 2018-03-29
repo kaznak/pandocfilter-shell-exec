@@ -25,6 +25,6 @@ tr 'A-Z' 'a-z'
 
 ## program designation
 
-~~~{#prog .shell-exec prog='bc -ql'}
+~~~{#prog .shell-exec prog="bc 		-ql "}
 1+1
 ~~~
