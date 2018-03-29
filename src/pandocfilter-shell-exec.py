@@ -6,6 +6,8 @@ import json
 import panflute as pf
 from subprocess import Popen, PIPE
 import collections as c
+import io
+import csv
 
 #############################################################
 def proc_shell_exec(elm, doc):
@@ -42,6 +44,56 @@ def proc_image(elm,doc):
         attributes = attr
     ))
 
+def proc_csv_table(elm,doc):
+    if type(elm) == pf.CodeBlock and 'csv-table' in elm.classes:
+        sys.stderr.write(
+            'csv-table #' + elm.identifier + '\n'
+        )
+        attr = elm.attributes
+
+        caption = attr.get('caption',None)
+        if 'caption' in attr:
+            del attr['caption']
+
+        alignment = attr.get('alignment',None)
+        if 'alignment' in attr:
+            del attr['alignment']
+            
+        width = attr.get('width',None)
+        if 'width' in attr:
+            del attr['width']
+        
+        with io.StringIO(elm.text) as dat:
+            reader = csv.reader(
+                dat,
+                dialect = csv.excel,
+                strict = True
+            )
+            body = []
+            for row in reader:
+                cells = [pf.TableCell(pf.Plain(pf.Str(x))) for x in row]
+                body.append(pf.TableRow(*cells))
+
+        if 'header' in attr:
+            header = body.pop(0)
+            del attr['header']
+        else:
+            header = None
+
+        return pf.Div(
+            # content
+            pf.Table(
+                *body,
+                header = header,
+                caption = caption,
+                alignment = alignment,
+                width = width
+            ),
+            identifier = elm.identifier,
+            classes = elm.classes,
+            attributes = attr
+        )
+
 #############################################################
 def pandoc_filter(elm, doc):
     # print((elm,doc), file=sys.stderr)
@@ -64,5 +116,6 @@ if __name__ == "__main__":
     pf.run_filters(
         [
             pandoc_filter,
+            proc_csv_table,
         ],
         doc = None)
