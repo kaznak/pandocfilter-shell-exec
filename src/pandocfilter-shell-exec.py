@@ -11,38 +11,44 @@ import csv
 
 #############################################################
 def proc_shell_exec(elm, doc):
-    prog = u'sh'
-    code = elm.text
+    if type(elm) == pf.CodeBlock and 'shell-exec' in elm.classes:
+        prog = u'sh'
+        code = elm.text
 
-    sys.stderr.write(
-        'shell-exec #' + elm.identifier + ' prog=' + prog + '\n'
-    )
+        sys.stderr.write(
+            'shell-exec #' + elm.identifier + ' prog=' + prog + '\n'
+        )
     
-    p = Popen([prog], stdin=PIPE, stdout=PIPE)
-    p.stdin.write(code.encode('utf-8'))
-    elm.text = p.communicate()[0].decode('utf-8')
-    p.stdin.close
+        p = Popen([prog], stdin=PIPE, stdout=PIPE)
+        p.stdin.write(code.encode('utf-8'))
+        elm.text = p.communicate()[0].decode('utf-8')
+        p.stdin.close
 
-    return elm
+        return elm
 
 def proc_image(elm,doc):
-    attr = elm.attributes
+    if type(elm) == pf.CodeBlock and 'image' in elm.classes:
+        attr = elm.attributes
 
-    altstr = attr.get('alt','an image')
-    if 'alt' in attr:
-        del attr['alt']
-    title = attr.get('title','an image')
-    if 'title' in attr:
-        del attr['title']
+        altstr = attr.get('alt','an image')
+        if 'alt' in attr:
+            del attr['alt']
+        title = attr.get('title','an image')
+        if 'title' in attr:
+            del attr['title']
 
-    return pf.Para(pf.Image(
-        pf.Str(altstr),
-        url = elm.text.strip(),
-        title = title,
-        identifier = elm.identifier,
-        classes = elm.classes,
-        attributes = attr
-    ))
+        url = elm.text.strip()
+        sys.stderr.write(
+            'image #' + elm.identifier + 'url=' + url + '\n'
+        )
+        return pf.Para(pf.Image(
+            pf.Str(altstr),
+            url = url,
+            title = title,
+            identifier = elm.identifier,
+            classes = elm.classes,
+            attributes = attr
+        ))
 
 def proc_csv_table(elm,doc):
     if type(elm) == pf.CodeBlock and 'csv-table' in elm.classes:
@@ -95,27 +101,12 @@ def proc_csv_table(elm,doc):
         )
 
 #############################################################
-def pandoc_filter(elm, doc):
-    # print((elm,doc), file=sys.stderr)
-    if type(elm) == pf.CodeBlock and 'shell-exec' in elm.classes:
-        elm = proc_shell_exec(elm, doc)
-
-        if 'image' in elm.classes:
-            sys.stderr.write(
-                'shell-exec #' + elm.identifier + ' output as Image\n'
-            )
-            return proc_image(elm, doc)
-        else:
-            sys.stderr.write(
-                'shell-exec #' + elm.identifier + ' output as CodeBlock \n'
-            )
-            return elm
-
-#############################################################
 if __name__ == "__main__":
     pf.run_filters(
         [
-            pandoc_filter,
+            proc_shell_exec,
+            # below filters must listed after shell_exec.
+            proc_image,
             proc_csv_table,
         ],
         doc = None)
