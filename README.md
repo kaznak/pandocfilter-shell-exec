@@ -1,5 +1,5 @@
 
-# pandoc-filter-shellexec
+# pandocfilter-shell-exec
 
 a [pandoc filter](https://pandoc.org/filters.html)
 to embed a result of a shell code execution in codeblock.
