@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">td{white-space: pre;}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="table-generation">table generation</h1>
+<p><a href="https://tools.ietf.org/html/rfc4180.html">RFC 4180</a>. This test based on excel style.</p>
+<h2 id="simple">simple</h2>
+<div id="simple" class="shell-exec csv-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Col1</th>
+<th style="text-align: left;"> Col2</th>
+<th style="text-align: left;"> Col3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"> 2</td>
+<td style="text-align: left;"> 3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;"> 20</td>
+<td style="text-align: left;"> 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="long-cell">long cell</h2>
+<div id="not-quoted" class="shell-exec csv-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">col1</th>
+<th style="text-align: left;">col2</th>
+<th style="text-align: left;">col3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">This is a cell.</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">This is another cell.</td>
+<td style="text-align: left;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="quotes">quotes</h2>
+<div id="quoted" class="shell-exec csv-table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">col1</th>
+<th style="text-align: left;">col2</th>
+<th style="text-align: left;">col3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">This is a cell, with comma.</td>
+<td style="text-align: left;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">This is a cell
+with newline.</td>
+<td style="text-align: left;">8</td>
+</tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>
