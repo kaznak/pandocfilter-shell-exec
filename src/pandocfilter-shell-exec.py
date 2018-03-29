@@ -30,6 +30,10 @@ def proc_shell_exec(elm, doc):
         elm.text = p.communicate()[0].decode('utf-8')
         p.stdin.close
 
+        # classes = elm.classes
+        # classes.remove('shell-exec')
+        # elm.classes = classes
+
         elm.attributes = attr
 
         return elm
@@ -44,6 +48,10 @@ def proc_image(elm,doc):
         title = attr.get('title','an image')
         if 'title' in attr:
             del attr['title']
+
+        # classes = elm.classes
+        # classes.remove('image')
+        # elm.classes = classes
 
         url = elm.text.strip()
         sys.stderr.write(
