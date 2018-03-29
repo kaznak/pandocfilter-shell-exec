@@ -22,3 +22,9 @@ tr 'A-Z' 'a-z'
 echo 'FROM PANDOC!'	|
 tr 'A-Z' 'a-z'
 ~~~
+
+## program designation
+
+~~~{#prog .shell-exec prog='bc -ql'}
+1+1
+~~~
