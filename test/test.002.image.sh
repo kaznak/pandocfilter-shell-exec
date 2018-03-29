@@ -55,4 +55,7 @@ IS_ERROR unexpected output || exit 1
 
 IS_ERROR no image file in expected place || exit 1
 
+msg INFO $tname succsess with
+
+rm -f $testd/test.$tname.html
 rm -rf $testd/img

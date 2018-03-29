@@ -27,12 +27,16 @@ grep -Ev '^[[:space:]]*#' $testd/test.000.test.lst	|
 awk '{	tname = $1
     	print tname, "'$testd'/test."tname".sh"	}'	|
 while read tname tscript ; do
-    $tscript
-    ecode=$?
-    if [ 0 -eq $ecode ] ; then
-	msg INFO test $tname succsess with $ecode
-	rm -f $testd/test.$tname.html
-    else
-	msg INFO test $tname error with $ecode
-    fi
+    $tscript	||
+	echo $tname >> $tmpd/error-test.lst
 done
+
+########################################################
+if [ -s $tmpd/error-test.lst ] ; then
+   msg INFO test fail : $(tr '\n' ' ' < $tmpd/error-test.lst).
+   exit 1
+else
+    msg INFO all test success.
+    exit 0
+fi
+       

@@ -51,3 +51,7 @@ IS_ERROR pandoc invocation || exit 1
 diff -u $testd/test.$tname.expect.html $testd/test.$tname.html
 
 IS_ERROR unexpected output || exit 1
+
+msg INFO $tname succsess
+
+rm -f $testd/test.$tname.html
