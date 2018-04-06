@@ -85,13 +85,17 @@ def proc_csv_table(elm,doc):
                 strict = True
             )
             body = []
+            max_width = None
             for row in reader:
                 cells = []
+                max_width_row = []
                 for cell_str in row:
                     cell_cont = []
                     for line in re.sub(r'\n+', '\n',
                                        cell_str).split('\n'):
+                        max_wlen = 0
                         for word in line.split(' '):
+                            max_wlen = max(len(word),max_wlen)
                             if '' != word:
                                 cell_cont.append(pf.Str(word))
                             cell_cont.append(pf.Space())
@@ -99,9 +103,19 @@ def proc_csv_table(elm,doc):
                         cell_cont = cell_cont[:-1]
                         cell_cont.append(pf.SoftBreak())
 
+                    max_width_row.append(max_wlen)
+
                     cell_cont = cell_cont[:-1]
                     cell = pf.TableCell(pf.Plain(*cell_cont))
                     cells.append(cell)
+
+                if (None == max_width):
+                    max_wdith = max_width_row
+                max_width = [
+                    max(x)
+                    for x in zip(max_wdith,max_width_row)
+                ]
+
                 body.append(pf.TableRow(*cells))
 
         if 'header' in attr:
