@@ -40,10 +40,9 @@ cd $testd
 
 rm -rf $testd/test.$tname.html $testd/img
 
-pandoc --standalone $testd/test.$tname.md	\
+pandoc $testd/test.$tname.md	\
        --filter $srcd/pandocfilter-shell-exec.py	\
        --to=html5	\
-       --template=$testd/test.000.html5_template.html	\
        --output=$testd/test.$tname.html
 
 IS_ERROR pandoc invocation || exit 1
