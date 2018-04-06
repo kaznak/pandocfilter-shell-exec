@@ -101,7 +101,6 @@ def proc_csv_table(elm,doc):
 
                     cell_cont = cell_cont[:-1]
                     cell = pf.TableCell(pf.Plain(*cell_cont))
-                    print(cell,file=sys.stderr)
                     cells.append(cell)
                 body.append(pf.TableRow(*cells))
 
