@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE
 import collections as c
 import io
 import csv
+import re
 from functools import reduce
 
 #############################################################
@@ -85,7 +86,23 @@ def proc_csv_table(elm,doc):
             )
             body = []
             for row in reader:
-                cells = [pf.TableCell(pf.Plain(pf.Str(x))) for x in row]
+                cells = []
+                for cell_str in row:
+                    cell_cont = []
+                    for line in re.sub(r'\n+', '\n',
+                                       cell_str).split('\n'):
+                        for word in line.split(' '):
+                            if '' != word:
+                                cell_cont.append(pf.Str(word))
+                            cell_cont.append(pf.Space())
+
+                        cell_cont = cell_cont[:-1]
+                        cell_cont.append(pf.SoftBreak())
+
+                    cell_cont = cell_cont[:-1]
+                    cell = pf.TableCell(pf.Plain(*cell_cont))
+                    print(cell,file=sys.stderr)
+                    cells.append(cell)
                 body.append(pf.TableRow(*cells))
 
         if 'header' in attr:
