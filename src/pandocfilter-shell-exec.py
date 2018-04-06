@@ -77,7 +77,7 @@ def proc_csv_table(elm,doc):
         if 'width' in attr:
             del attr['width']
         
-        with io.StringIO(elm.text) as dat:
+        with io.StringIO(elm.text.replace('\r\n','\n')) as dat:
             reader = csv.reader(
                 dat,
                 dialect = csv.excel,
